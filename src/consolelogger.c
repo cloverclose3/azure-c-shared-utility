@@ -214,6 +214,9 @@ void consolelogger_log(LOG_CATEGORY log_category, const char* file, const char* 
     case AZ_LOG_ERROR:
         (void)printf("Error: Time:%.24s File:%s Func:%s Line:%d ", ctime(&t), file, func, line);
         break;
+    case AZ_LOG_DEBUG:
+		(void)printf("[%s %d] ", file, line);
+        break;
     default:
         break;
     }

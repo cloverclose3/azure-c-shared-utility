@@ -25,12 +25,12 @@ extern "C" {
 #ifdef TIZENRT
 #undef LOG_INFO
 #endif
-
 typedef enum LOG_CATEGORY_TAG
 {
     AZ_LOG_ERROR,
     AZ_LOG_INFO,
-    AZ_LOG_TRACE
+    AZ_LOG_TRACE,
+    AZ_LOG_DEBUG
 } LOG_CATEGORY;
 
 #if defined _MSC_VER
@@ -54,6 +54,7 @@ typedef void(*LOGGER_LOG_GETLASTERROR)(const char* file, const char* func, int l
 #define LogInfo(...)
 #define LogBinary(...)
 #define LogError(...)
+#define LogDbg(...)
 #define xlogging_get_log_function() NULL
 #define xlogging_set_log_function(...)
 #define LogErrorWinHTTPWithGetLastErrorAsString(...)
@@ -83,7 +84,6 @@ typedef void(*LOGGER_LOG_GETLASTERROR)(const char* file, const char* func, int l
 }
 
 #else /* NOT ESP8266_RTOS */
-
 #if defined _MSC_VER
 #define LOG(log_category, log_options, format, ...) { LOGGER_LOG l = xlogging_get_log_function(); if (l != NULL) l(log_category, __FILE__, FUNC_NAME, __LINE__, log_options, format, __VA_ARGS__); }
 #else
@@ -137,6 +137,7 @@ extern LOGGER_LOG_GETLASTERROR xlogging_get_log_function_GetLastError(void);
             } while((void)0,0)
 #else
 #define LogError(FORMAT, ...) do{ LOG(AZ_LOG_ERROR, LOG_LINE, FORMAT, ##__VA_ARGS__); }while((void)0,0)
+#define LogDbg(FORMAT, ...) do{ LOG(AZ_LOG_DEBUG, LOG_NONE, FORMAT, ##__VA_ARGS__); }while((void)0,0)
 #endif
 
 extern void LogBinary(const char* comment, const void* data, size_t size);
